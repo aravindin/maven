@@ -1,0 +1,31 @@
+
+
+node('built-in') 
+{
+    stage('ContinuousDownload') 
+    {
+       git 'https://github.com/intelliqittrainings/maven.git'
+    }
+    stage('ContinuousBuild')
+    {
+        sh 'mvn package'
+    }
+    stage('ContinuousDeploy')
+    {
+        deploy adapters: [tomcat9(credentialsId: '5f60db13-9fe3-4287-9fda-7f72dd9d4b51', path: '', url: 'http://172.31.47.69:8080')], contextPath: 'aravind', war: '**/*.war'
+    }
+    stage('ContinuousTesting')
+    {
+        git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+        
+        sh 'java -jar /var/lib/jenkins/workspace/pipeline-01/testing.jar'
+    }
+    stage('ContinuousDelivary')
+    {
+       input message: 'worker of the year', submitter: 'avi'
+       deploy adapters: [tomcat9(credentialsId: '79171a98-409f-4ea5-8bf9-e1ed704f0196', path: '', url: 'http://172.31.47.62:8080')], contextPath: 'jadi', war: '**/*.war' 
+    }
+    
+    
+    
+}
