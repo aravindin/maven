@@ -16,7 +16,7 @@ node('built-in')
     }
     stage('ContinuousTesting')
     {
-        git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+        git 'https://github.com/aravindin/maven.git'
         
         sh 'java -jar /var/lib/jenkins/workspace/pipeline-01/testing.jar'
     }
